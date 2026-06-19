@@ -210,7 +210,7 @@ fn render_text(app: &App, cols: u16, rows: u16, list_h: usize) {
     }
 
     // Footer (last row — below the image).
-    let foot = " ↑↓ move · ⇧↑↓ size · type filter · Enter pick · Esc cancel";
+    let foot = " ↑↓ move · ⇧↑↓ size · type to filter · Enter pick · Q/Esc quit";
     let foot = trunc(foot, cols as usize);
     s.push_str(&move_to(rows, 1));
     s.push_str(&format!(
@@ -247,7 +247,7 @@ fn main() {
             println!();
             println!("Usage: fonts [--out=FILE] [--size N] [FAMILY]");
             println!("  ↑/↓ PgUp/PgDn move · Shift+↑/↓ size · type to filter ·");
-            println!("  Enter pick · Esc cancel");
+            println!("  Enter pick · Q/Esc quit");
             println!("Output: family=… / size=… / path=… on Enter.");
             return;
         } else if !a.starts_with('-') {
@@ -321,7 +321,9 @@ fn main() {
             None => continue,
         };
         match key.as_str() {
-            "ESC" | "C-C" => break,
+            // `Q` quits (lowercase letters are reserved for type-to-filter, so
+            // a font name with 'q' is still searchable). Esc/Ctrl-C too.
+            "ESC" | "C-C" | "Q" => break,
             "ENTER" => {
                 if cur_fi.is_some() {
                     selected = true;

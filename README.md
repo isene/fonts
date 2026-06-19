@@ -50,7 +50,7 @@ from a cancel.
 | type / `Backspace` | filter by family name |
 | `Ctrl-U` | clear the filter |
 | `Enter` | pick |
-| `Esc` / `Ctrl-C` | cancel |
+| `Q` / `Esc` / `Ctrl-C` | quit |
 
 ## As a picker (the prism pattern)
 
