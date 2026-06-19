@@ -53,6 +53,32 @@ fn trunc(s: &str, w: usize) -> String {
     }
 }
 
+/// True if the font carries a `glyf` table (TrueType outlines, which is what
+/// glyph rasterizes). CFF/OpenType (.otf, PostScript outlines), bitmap, and
+/// colour fonts lack it and glyph can't preview them — so they're dropped from
+/// the list. Just reads the SFNT table directory (a few hundred bytes), no
+/// subprocess.
+fn has_glyf_outlines(path: &str) -> bool {
+    use std::io::Read;
+    let mut f = match std::fs::File::open(path) {
+        Ok(f) => f,
+        Err(_) => return false,
+    };
+    let mut head = [0u8; 12];
+    if f.read_exact(&mut head).is_err() {
+        return false;
+    }
+    let num = u16::from_be_bytes([head[4], head[5]]) as usize;
+    if num == 0 || num > 4096 {
+        return false;
+    }
+    let mut dir = vec![0u8; num * 16];
+    if f.read_exact(&mut dir).is_err() {
+        return false;
+    }
+    dir.chunks_exact(16).any(|r| &r[0..4] == b"glyf")
+}
+
 fn load_families() -> Vec<Family> {
     let home = std::env::var("HOME").unwrap_or_default();
     let cmd = format!(
@@ -75,6 +101,11 @@ fn load_families() -> Vec<Family> {
         let family = it.next().unwrap_or("");
         let style = it.next().unwrap_or("");
         if path.is_empty() || family.is_empty() {
+            continue;
+        }
+        // Drop faces glyph can't rasterize (CFF/OTF, bitmap, colour) so the
+        // list only holds fonts that actually preview.
+        if !has_glyf_outlines(path) {
             continue;
         }
         let is_reg = style.is_empty()
