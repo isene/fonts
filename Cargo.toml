@@ -1,0 +1,25 @@
+[package]
+name = "fonts"
+version = "0.1.0"
+edition = "2021"
+authors = ["Geir Isene <g@isene.com>"]
+description = "TUI font picker with live previews — enumerates installed fonts via glyph, previews the highlighted family, returns family + size. Launchable as a picker (--out) like prism. Member of the Fe2O3 suite."
+license = "Unlicense"
+repository = "https://github.com/isene/fonts"
+readme = "README.md"
+
+[[bin]]
+name = "fonts"
+path = "src/main.rs"
+
+[dependencies]
+crust = { version = "0.1", path = "../crust", package = "fe2o3-crust" }
+glow = { version = "0.1", path = "../glow", package = "fe2o3-glow" }
+# Decode glyph's P5 PGM preview and re-encode as PNG for glow.
+image = { version = "0.25", default-features = false, features = ["png", "pnm"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
