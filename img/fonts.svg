@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0a0a14"/>
+    </linearGradient>
+    <linearGradient id="rust" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f74c00"/>
+      <stop offset="100%" style="stop-color:#b7410e"/>
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes pulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+    .cursor { animation: pulse 2.6s ease-in-out infinite; }
+  </style>
+
+  <circle cx="128" cy="128" r="120" fill="url(#bg)" stroke="url(#rust)" stroke-width="3"/>
+
+  <!-- the font list (left): family rows, the cursor row selected -->
+  <g transform="translate(44,70)">
+    <rect x="0" y="0"  width="50" height="7" rx="3.5" fill="#cfcfd6" opacity="0.38"/>
+    <g class="cursor">
+      <path d="M -9 15 l 6 4 l -6 4 z" fill="#f74c00"/>
+      <rect x="0" y="13" width="60" height="9" rx="4.5" fill="url(#rust)"/>
+    </g>
+    <rect x="0" y="34" width="42" height="7" rx="3.5" fill="#cfcfd6" opacity="0.38"/>
+    <rect x="0" y="50" width="54" height="7" rx="3.5" fill="#cfcfd6" opacity="0.38"/>
+    <rect x="0" y="66" width="38" height="7" rx="3.5" fill="#cfcfd6" opacity="0.38"/>
+  </g>
+
+  <!-- the preview (right): a type specimen, rendered in a real serif -->
+  <g transform="translate(120,56)">
+    <rect x="0" y="0" width="94" height="86" rx="6" fill="#0d0d16" stroke="#f74c00" stroke-width="1.5"/>
+    <!-- x-height (dashed) + baseline (solid) metric guides -->
+    <line x1="11" y1="40" x2="83" y2="40" stroke="#f74c00" stroke-width="0.6" opacity="0.25" stroke-dasharray="2 2"/>
+    <line x1="11" y1="63" x2="83" y2="63" stroke="#f74c00" stroke-width="0.8" opacity="0.45"/>
+    <text x="47" y="63" font-family="Georgia, 'Times New Roman', serif" font-size="50" fill="#ffd9c2" text-anchor="middle">Aa</text>
+  </g>
+
+  <text x="128" y="206" font-family="monospace" font-size="23" font-weight="bold" fill="url(#rust)" text-anchor="middle" letter-spacing="3">fonts</text>
+  <text x="128" y="223" font-family="monospace" font-size="8" fill="#888" text-anchor="middle">font picker</text>
+</svg>

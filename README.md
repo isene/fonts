@@ -1,5 +1,7 @@
 # fonts
 
+<img src="img/fonts.svg" align="left" width="150" height="150">
+
 ![Version](https://img.shields.io/badge/version-0.1.0-blue) ![Rust](https://img.shields.io/badge/language-Rust-f74c00) ![License](https://img.shields.io/badge/license-Unlicense-green) ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS-blue) ![Stay Amazing](https://img.shields.io/badge/Stay-Amazing-important)
 
 A TUI font picker with **live previews**. Browse every font installed on your
@@ -7,6 +9,8 @@ system, see the highlighted family rendered in its own typeface, and get the
 chosen family + point size back. Built to be launched as a picker by another
 TUI, exactly like [prism](https://github.com/isene/prism) is for colours. Part
 of the [Fe2O3](https://github.com/isene/fe2o3) Rust terminal suite.
+
+<br clear="left"/>
 
 ## How it works
 
