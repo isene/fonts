@@ -22,7 +22,8 @@
 use std::io::Write;
 use std::process::Command;
 
-use crust::{Crust, Input};
+use crust::style;
+use crust::{Crust, Cursor, Input};
 
 struct Family {
     name: String,
@@ -41,7 +42,7 @@ struct App {
 // ── helpers ───────────────────────────────────────────────────────────
 
 fn move_to(row: u16, col: u16) -> String {
-    format!("\x1b[{};{}H", row, col)
+    Cursor::at(col, row)
 }
 
 /// Truncate to at most `w` chars (char-based; font names are ~ASCII).
@@ -183,10 +184,11 @@ fn render_text(app: &App, cols: u16, rows: u16, list_h: usize) {
     );
     let hdr = trunc(&hdr, cols as usize);
     s.push_str(&move_to(1, 1));
-    s.push_str(&format!(
-        "\x1b[48;2;30;30;42m\x1b[38;2;235;235;245m{:<w$}\x1b[0m",
-        hdr,
-        w = cols as usize
+    s.push_str(&style::rgb(
+        &format!("{:<w$}", hdr, w = cols as usize),
+        Some((235, 235, 245)),
+        Some((30, 30, 42)),
+        "",
     ));
 
     // List rows 2..=rows-1.
@@ -199,9 +201,9 @@ fn render_text(app: &App, cols: u16, rows: u16, list_h: usize) {
             let body = format!("{}{}", if idx == app.cursor { "▸ " } else { "  " }, name);
             let pad = (LIST_W as usize).saturating_sub(body.chars().count());
             if idx == app.cursor {
-                s.push_str(&format!("\x1b[1;38;2;120;200;255m{}\x1b[0m", body));
+                s.push_str(&style::rgb(&body, Some((120, 200, 255)), None, "b"));
             } else {
-                s.push_str(&format!("\x1b[38;2;200;200;210m{}\x1b[0m", body));
+                s.push_str(&style::rgb(&body, Some((200, 200, 210)), None, ""));
             }
             s.push_str(&" ".repeat(pad));
         } else {
@@ -213,10 +215,11 @@ fn render_text(app: &App, cols: u16, rows: u16, list_h: usize) {
     let foot = " ↑↓ move · ⇧↑↓ size · type to filter · Enter pick · Q/Esc quit";
     let foot = trunc(foot, cols as usize);
     s.push_str(&move_to(rows, 1));
-    s.push_str(&format!(
-        "\x1b[48;2;30;30;42m\x1b[38;2;180;180;195m{:<w$}\x1b[0m",
-        foot,
-        w = cols as usize
+    s.push_str(&style::rgb(
+        &format!("{:<w$}", foot, w = cols as usize),
+        Some((180, 180, 195)),
+        Some((30, 30, 42)),
+        "",
     ));
 
     print!("{}", s);
@@ -386,7 +389,7 @@ fn main() {
     disp.forget_path(&preview_png);
     let _ = std::fs::remove_file(&preview_png);
     Crust::cleanup();
-    print!("\x1b[?25h");
+    Cursor::show();
     let _ = std::io::stdout().flush();
 
     if selected {
