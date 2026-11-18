@@ -1,6 +1,6 @@
 [package]
 name = "fonts"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Geir Isene <g@isene.com>"]
 description = "TUI font picker with live previews — enumerates installed fonts via glyph, previews the highlighted family, returns family + size. Launchable as a picker (--out) like prism. Member of the Fe2O3 suite."

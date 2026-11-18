@@ -212,11 +212,10 @@ fn render_text(app: &App, cols: u16, rows: u16, list_h: usize) {
     }
 
     // Footer (last row — below the image).
-    let foot = " ↑↓ move · ⇧↑↓ size · type to filter · Enter pick · Q/Esc quit";
-    let foot = trunc(foot, cols as usize);
+    let foot = crust::with_version(" ↑↓ move · ⇧↑↓ size · type to filter · Enter pick · Q/Esc quit", cols as usize, "fonts", env!("CARGO_PKG_VERSION"));
     s.push_str(&move_to(rows, 1));
     s.push_str(&style::rgb(
-        &format!("{:<w$}", foot, w = cols as usize),
+        &foot,
         Some((180, 180, 195)),
         Some((30, 30, 42)),
         "",
